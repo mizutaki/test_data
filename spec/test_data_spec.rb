@@ -22,19 +22,19 @@ describe TestData do
     end
 
     it "should zero test data size 0byte" do
-      TestData::Command.new.invoke(:create, [],{:num => 0, :size => 0})
+      TestData::Command.new.invoke(:create, [],{:name => "test", :num => 0, :size => 0})
       expect(Dir.glob(@path).length).to eq 0
     end
 
     it "should one test data size 1byte" do
-      TestData::Command.new.invoke(:create, [],{:num => 1, :size => 1})
-      expect(File.size("./testdata/0")).to eq 1
+      TestData::Command.new.invoke(:create, [],{:name => "test", :num => 1, :size => 1})
+      expect(File.size("./testdata/test0")).to eq 1
       expect(Dir.glob(@path).length).to eq 1
     end
 
     it "should thousand test data size 1000byte" do
-      TestData::Command.new.invoke(:create, [],{:num => 1000, :size => 1000})
-      expect(File.size("./testdata/0")).to eq 1000
+      TestData::Command.new.invoke(:create, [],{:name => "test", :num => 1000, :size => 1000})
+      expect(File.size("./testdata/test0")).to eq 1000
       expect(Dir.glob(@path).length).to eq 1000
     end
   end
