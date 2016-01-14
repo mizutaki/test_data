@@ -22,7 +22,7 @@ describe TestData do
     end
 
     it "should zero test data size 0byte" do
-      TestData::Command.new.invoke(:create, [],{:name => "test", :num => 0, :size => 0})
+      TestData::Command.new.invoke(:create, [],{:num => 0, :size => 0})
       expect(Dir.glob(@path).length).to eq 0
     end
 
@@ -36,6 +36,16 @@ describe TestData do
       TestData::Command.new.invoke(:create, [],{:name => "test", :num => 1000, :size => 1000})
       expect(File.size("./testdata/test0")).to eq 1000
       expect(Dir.glob(@path).length).to eq 1000
+    end
+
+    it "should path defalut value ./testdata/" do
+      TestData::Command.new.invoke(:create, [],{:name => "test", :num => 1, :size => 1})
+      File.exist?('./testdata/test0') == true
+    end
+
+    it "should name defalut value test" do
+      TestData::Command.new.invoke(:create, [],{:path => "./testdata/", :num => 1, :size => 1})
+      File.exist?('./folder/test0') == true
     end
   end
 end
