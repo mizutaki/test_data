@@ -48,4 +48,18 @@ describe TestData do
       File.exist?('./folder/test0') == true
     end
   end
+
+  describe 'create_tree' do
+    after :each do
+      FileUtils.rm_r(Dir.glob('./top'), {:force=>true})
+    end
+
+    it "should path defalut value tree content" do
+      TestData::Command.new.invoke(:create_tree)
+      File.exist?('./top/1/11/111/test1.txt') == true
+      File.exist?('./top/2/22/test2.txt') == true
+      File.exist?('./top/3') == true
+      File.exist?('./top/test.txt') == true
+    end
+  end
 end
