@@ -22,6 +22,7 @@ module TestData
     desc "create_tree --read [READ_FILEPATH]", "create content tree."
     method_option :path, :type => :string, :default => "./sandbox/test.xml"
     def create_tree
+      raise IOError, "file is not found -- path: #{options[:path]}" unless File.exist?(options[:path])
       file = File.open(options[:path])
       xml = Nokogiri::XML(file)
       xml.xpath("//testdata").children.each do |child|
@@ -47,6 +48,8 @@ module TestData
             File.open(parent_path + "/" + c.attributes["name"], "w") do |file|
               puts file
             end
+          else
+            raise StandardError, "undefined xml tag name #{c.node_name}"
           end
         end
       end

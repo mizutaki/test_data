@@ -40,12 +40,12 @@ describe TestData do
 
     it "should path defalut value ./testdata/" do
       TestData::Command.new.invoke(:create, [],{:name => "test", :num => 1, :size => 1})
-      File.exist?('./testdata/test0') == true
+      expect(File.exist?('./testdata/test0')).to be true
     end
 
     it "should name defalut value test" do
-      TestData::Command.new.invoke(:create, [],{:path => "./testdata/", :num => 1, :size => 1})
-      File.exist?('./folder/test0') == true
+      TestData::Command.new.invoke(:create, [],{:path => "./folder/", :num => 1, :size => 1})
+      expect(File.exist?('./folder/test0')).to be true
     end
   end
 
@@ -55,11 +55,23 @@ describe TestData do
     end
 
     it "should path defalut value tree content" do
-      TestData::Command.new.invoke(:create_tree)
-      File.exist?('./top/1/11/111/test1.txt') == true
-      File.exist?('./top/2/22/test2.txt') == true
-      File.exist?('./top/3') == true
-      File.exist?('./top/test.txt') == true
+      TestData::Command.new.invoke(:create_tree, [],{:path => "./spec/testdata/test1.xml"})
+      expect(File.exist?('./top/1/11/111/test1.txt')).to be true
+      expect(File.exist?('./top/2/22/test2.txt')).to be true
+      expect(File.exist?('./top/3')).to be true
+      expect(File.exist?('./top/test.txt')).to be true
     end
+
+    it "should read file not found exception" do
+      path = "./spec/1234/lmx.xml"
+      expect{TestData::Command.new.invoke(:create_tree, [],{:path => path})}.to raise_error("file is not found -- path: #{path}")
+    end
+
+    it "should nudefined xml tag name exception" do
+      path = "./spec/testdata/test2.xml"
+      expect{TestData::Command.new.invoke(:create_tree, [],{:path => path})}.to raise_error("undefined xml tag name filee")
+      expect(File.exist?('./top/1/11/111/test1.txt')).to be true
+    end
+
   end
 end
