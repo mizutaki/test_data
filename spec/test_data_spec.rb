@@ -67,10 +67,20 @@ describe TestData do
       expect{TestData::Command.new.invoke(:create_tree, [],{:path => path})}.to raise_error("file is not found -- path: #{path}")
     end
 
-    it "should nudefined xml tag name exception" do
-      path = "./spec/testdata/test2.xml"
-      expect{TestData::Command.new.invoke(:create_tree, [],{:path => path})}.to raise_error("undefined xml tag name filee")
-      expect(File.exist?('./top/1/11/111/test1.txt')).to be true
+    it "should xml attribute size" do
+      path = "./spec/testdata/test3.xml"
+      TestData::Command.new.invoke(:create_tree, [],{:path => path})
+      expect(File.size('./top/1/11/111/test1.txt')).to eq 201
+      expect(File.size('./top/2/22/test2.txt')).to eq 10000
+      expect(File.size('./top/test.txt')).to eq 1
+    end
+
+    it "should xml no attribute size" do
+      path = "./spec/testdata/test4.xml"
+      TestData::Command.new.invoke(:create_tree, [],{:path => path})
+      expect(File.size('./top/1/11/111/test1.txt')).to eq 0
+      expect(File.size('./top/2/22/test2.txt')).to eq 0
+      expect(File.size('./top/test.txt')).to eq 0
     end
 
   end

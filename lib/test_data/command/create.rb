@@ -46,7 +46,10 @@ module TestData
           elsif c.node_name == "file"
             puts "file"
             File.open(parent_path + "/" + c.attributes["name"], "w") do |file|
-              puts file
+              unless c.attributes["size"].nil?
+                size = c.attributes["size"].value
+                file.truncate(size.to_i)
+              end
             end
           else
             raise StandardError, "undefined xml tag name #{c.node_name}"
