@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testdata>
+  <rootfolder name="top">
+  	<folder name="1">
+  		<folder name="11">
+            <folder name="111">
+              <file name="test1.txt" size="20" count="20"></file>
+            </folder>
+  		</folder>
+  	</folder>
+    <file name="test.txt" size="10000" count="1000"></file>
+    <folder name="2">
+        <folder name="22">
+          <file name="test2.txt"></file>
+        </folder>
+    </folder>
+    <folder name="3">
+    </folder>
+  </rootfolder>
+</testdata>

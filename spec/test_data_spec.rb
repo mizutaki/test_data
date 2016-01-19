@@ -83,5 +83,17 @@ describe TestData do
       expect(File.size('./top/test.txt')).to eq 0
     end
 
+    it "should xml attribute count" do
+      path = "./spec/testdata/test5.xml"
+      TestData::Command.new.invoke(:create_tree, [],{:path => path})
+      20.times do |t|
+        expect(File.exist?('./top/1/11/111/test1.txt' + t.to_s)).to be true
+        expect(File.size('./top/1/11/111/test1.txt' + t.to_s)).to eq 20
+      end
+      1000.times do |t|
+        expect(File.exist?('./top/test.txt' + t.to_s)).to be true
+        expect(File.size('./top/test.txt' + t.to_s)).to eq 10000
+      end
+    end
   end
 end

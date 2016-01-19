@@ -45,10 +45,22 @@ module TestData
             create_content_recursion(c,current_path)
           elsif c.node_name == "file"
             puts "file"
-            File.open(parent_path + "/" + c.attributes["name"], "w") do |file|
-              unless c.attributes["size"].nil?
-                size = c.attributes["size"].value
-                file.truncate(size.to_i)
+            unless c.attributes["count"].nil?
+              count = c.attributes["count"].value
+              count.to_i.times do |n|
+                File.open(parent_path + "/" + c.attributes["name"] + n.to_s, "w") do |file|
+                  unless c.attributes["size"].nil?
+                    size = c.attributes["size"].value
+                    file.truncate(size.to_i)
+                  end
+                end
+              end
+            else
+              File.open(parent_path + "/" + c.attributes["name"], "w") do |file|
+                unless c.attributes["size"].nil?
+                  size = c.attributes["size"].value
+                  file.truncate(size.to_i)
+                end
               end
             end
           else
