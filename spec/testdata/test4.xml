@@ -4,14 +4,14 @@
   	<folder name="1">
   		<folder name="11">
             <folder name="111">
-              <file name="test1.txt"></file>
+              <file name="test1.txt" count="50"></file>
             </folder>
   		</folder>
   	</folder>
     <file name="test.txt"></file>
     <folder name="2">
         <folder name="22">
-          <file name="test2.txt"></file>
+          <file name="test2.txt" count="20"></file>
         </folder>
     </folder>
     <folder name="3">

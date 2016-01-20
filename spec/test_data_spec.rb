@@ -56,10 +56,19 @@ describe TestData do
 
     it "should path defalut value tree content" do
       TestData::Command.new.invoke(:create_tree, [],{:path => "./spec/testdata/test1.xml"})
-      expect(File.exist?('./top/1/11/111/test1.txt')).to be true
-      expect(File.exist?('./top/2/22/test2.txt')).to be true
+      10.times do |t|
+        expect(File.exist?('./top/1/11/111/test1' + t.to_s)).to be true
+        expect(File.size('./top/1/11/111/test1' + t.to_s)).to eq 1
+      end
+      5.times do |t|
+        expect(File.exist?('./top/2/22/test2' + t.to_s)).to be true
+        expect(File.size('./top/2/22/test2' + t.to_s)).to eq 10000
+      end
       expect(File.exist?('./top/3')).to be true
-      expect(File.exist?('./top/test.txt')).to be true
+      1.times do |t|
+        expect(File.exist?('./top/test' + t.to_s)).to be true
+        expect(File.size('./top/test' + t.to_s)).to eq 10
+      end
     end
 
     it "should read file not found exception" do
@@ -67,33 +76,20 @@ describe TestData do
       expect{TestData::Command.new.invoke(:create_tree, [],{:path => path})}.to raise_error("file is not found -- path: #{path}")
     end
 
-    it "should xml attribute size" do
-      path = "./spec/testdata/test3.xml"
-      TestData::Command.new.invoke(:create_tree, [],{:path => path})
-      expect(File.size('./top/1/11/111/test1.txt')).to eq 201
-      expect(File.size('./top/2/22/test2.txt')).to eq 10000
-      expect(File.size('./top/test.txt')).to eq 1
-    end
-
     it "should xml no attribute size" do
       path = "./spec/testdata/test4.xml"
       TestData::Command.new.invoke(:create_tree, [],{:path => path})
-      expect(File.size('./top/1/11/111/test1.txt')).to eq 0
-      expect(File.size('./top/2/22/test2.txt')).to eq 0
-      expect(File.size('./top/test.txt')).to eq 0
+      expect(File.exist?('./top/1/11/111')).to be true
+      expect(File.exist?('./top/2/22')).to be true
+      expect(File.exist?('./top/3')).to be true
     end
 
-    it "should xml attribute count" do
+    it "should xml no attribute count" do
       path = "./spec/testdata/test5.xml"
       TestData::Command.new.invoke(:create_tree, [],{:path => path})
-      20.times do |t|
-        expect(File.exist?('./top/1/11/111/test1.txt' + t.to_s)).to be true
-        expect(File.size('./top/1/11/111/test1.txt' + t.to_s)).to eq 20
-      end
-      1000.times do |t|
-        expect(File.exist?('./top/test.txt' + t.to_s)).to be true
-        expect(File.size('./top/test.txt' + t.to_s)).to eq 10000
-      end
+      expect(File.exist?('./top/1/11/111')).to be true
+      expect(File.exist?('./top/2/22')).to be true
+      expect(File.exist?('./top/3')).to be true
     end
   end
 end

@@ -13,9 +13,7 @@ module TestData
       path = options[:path]
       FileUtils.mkdir_p(path) unless File.directory?(path)
       options[:num].times do |n|
-        File.open(path + options[:name] + n.to_s, "w") do |file|
-          file.truncate(options[:size])
-        end
+        wrtite_file(path + options[:name] + n.to_s, options[:size])
       end
     end
 
@@ -45,28 +43,24 @@ module TestData
             create_content_recursion(c,current_path)
           elsif c.node_name == "file"
             puts "file"
-            unless c.attributes["count"].nil?
+            unless c.attributes["size"].nil? || c.attributes["count"].nil?
               count = c.attributes["count"].value
               count.to_i.times do |n|
-                File.open(parent_path + "/" + c.attributes["name"] + n.to_s, "w") do |file|
-                  unless c.attributes["size"].nil?
-                    size = c.attributes["size"].value
-                    file.truncate(size.to_i)
-                  end
-                end
+                wrtite_file(parent_path + "/" + c.attributes["name"] + n.to_s, c.attributes["size"].value.to_i)
               end
             else
-              File.open(parent_path + "/" + c.attributes["name"], "w") do |file|
-                unless c.attributes["size"].nil?
-                  size = c.attributes["size"].value
-                  file.truncate(size.to_i)
-                end
-              end
+              puts "TODO output warning log"
             end
           else
             raise StandardError, "undefined xml tag name #{c.node_name}"
           end
         end
+      end
+    end
+
+    def wrtite_file(file_path, size)
+      File.open(file_path, "w") do |file|
+        file.truncate(size)
       end
     end
   end
