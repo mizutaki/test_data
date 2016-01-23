@@ -1,6 +1,7 @@
 require 'test_data/command'
 require 'nokogiri'
 require 'fileutils'
+require 'builder/xmlmarkup'
 
 module TestData
   class Command < Thor
@@ -30,13 +31,33 @@ module TestData
       end
     end
 
+    desc "read_tree --path [READ_FILEPATH]", "read content tree to create a xml file."
+    method_options :path => :string
+    def read_tree
+      raise IOError, "file is not found -- path: #{options[:path]}" unless File.exist?(options[:path])
+      ret = ""
+      sub_contents = Dir.entries(options[:path])
+      xml = Builder::XmlMarkup.new(:target => ret, :indent => 2)
+      xml.instruct!
+      rootfolder_name = options[:path].split("\/").last
+      puts rootfolder_name
+      xml.testdata {
+        xml.rootfolder(:name => rootfolder_name) {
+          read_tree_recursion(xml, sub_contents, options[:path])
+        }
+      }
+      File.open("./ret.xml", "w") do |file|
+        file.puts ret
+      end
+    end
+
     private
     def create_content_recursion(child, parent_path)
       child.children.each do |c|
         unless c.node_name == "text"
           if c.node_name == "folder"
             puts "folder"
-            current_name = c.attributes["name"].value
+            current_name = c.attributes["name"].value#TODO name is nil throw exception
             current_path = parent_path + "/" + current_name
             puts "parent_path:" + parent_path
             FileUtils.mkdir_p(current_path) unless FileTest.exist?(current_path)
@@ -49,7 +70,9 @@ module TestData
                 wrtite_file(parent_path + "/" + c.attributes["name"] + n.to_s, c.attributes["size"].value.to_i)
               end
             else
-              puts "TODO output warning log"
+              unless c.attributes["size"].nil?
+                wrtite_file(parent_path + "/" + c.attributes["name"], c.attributes["size"].value.to_i)
+              end
             end
           else
             raise StandardError, "undefined xml tag name #{c.node_name}"
@@ -61,6 +84,28 @@ module TestData
     def wrtite_file(file_path, size)
       File.open(file_path, "w") do |file|
         file.truncate(size)
+      end
+    end
+
+    def read_tree_recursion(xml, sub_contents, parent_path)
+      sub_contents.each do |content_name|
+        unless "." == content_name  || ".." == content_name
+          current_path = parent_path + "/" + content_name
+          puts "current_path:" + current_path
+          is_dir = FileTest.directory?(current_path)
+          puts is_dir
+          if is_dir
+            puts "folder"
+            sub = Dir.entries(current_path)
+            xml.folder(:name => content_name) {
+              read_tree_recursion(xml,sub, current_path)
+            }
+          else
+            size = File.size(current_path)
+            puts size
+            xml.file(:name => content_name, :size => size)
+          end
+        end
       end
     end
   end

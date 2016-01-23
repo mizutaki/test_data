@@ -17,6 +17,10 @@ describe TestData do
       FileUtils.rm_r(Dir.glob('./testdata'), {:force=>true})
     end
 
+    it "should file not found" do
+      expect{TestData::Command.new.invoke(:create)}.to raise_error("argument is nil")
+    end
+
     it "should no arguments" do
       expect{TestData::Command.new.invoke(:create)}.to raise_error("argument is nil")
     end
@@ -90,6 +94,13 @@ describe TestData do
       expect(File.exist?('./top/1/11/111')).to be true
       expect(File.exist?('./top/2/22')).to be true
       expect(File.exist?('./top/3')).to be true
+    end
+  end
+
+  describe 'read_tree' do
+    it "should read file not found exception" do
+      path = "./spec/1234/lmx.xml"
+      expect{TestData::Command.new.invoke(:read_tree, [],{:path => path})}.to raise_error("file is not found -- path: #{path}")
     end
   end
 end
