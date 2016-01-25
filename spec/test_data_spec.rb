@@ -102,5 +102,19 @@ describe TestData do
       path = "./spec/1234/lmx.xml"
       expect{TestData::Command.new.invoke(:read_tree, [],{:path => path})}.to raise_error("file is not found -- path: #{path}")
     end
+
+    it "less content file has a same" do
+      path = "./spec/testdata/read_test.xml"
+      TestData::Command.new.invoke(:create_tree, [],{:path => path})
+      TestData::Command.new.invoke(:read_tree, [],{:path => "./top"})
+      FileUtils.cmp(path,"./ret.xml")
+    end
+
+    it "there are many content file has a same" do
+      path = "./spec/testdata/read_test2.xml"
+      TestData::Command.new.invoke(:create_tree, [],{:path => path})
+      TestData::Command.new.invoke(:read_tree, [],{:path => "./todo"})
+      FileUtils.cmp(path,"./ret.xml")
+    end
   end
 end

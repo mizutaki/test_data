@@ -89,7 +89,7 @@ module TestData
 
     def read_tree_recursion(xml, sub_contents, parent_path)
       sub_contents.each do |content_name|
-        unless "." == content_name  || ".." == content_name
+        unless "." == content_name  || ".." == content_name || content_name =~ /^\.d*/
           current_path = parent_path + "/" + content_name
           puts "current_path:" + current_path
           is_dir = FileTest.directory?(current_path)
