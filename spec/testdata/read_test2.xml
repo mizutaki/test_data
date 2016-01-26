@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testdata>
+  <rootfolder name="todo">
+    <folder name="bin">
+      <file name="todo" size="61"/>
+    </folder>
+    <file name="config.ru" size="45"/>
+    <folder name="doc">
+      <file name="_index.html" size="2480"/>
+      <file name="class_list.html" size="1804"/>
+      <folder name="css">
+        <file name="common.css" size="42"/>
+        <file name="full_list.css" size="5565"/>
+        <file name="style.css" size="17848"/>
+      </folder>
+      <file name="file.README.html" size="2969"/>
+      <file name="file_list.html" size="1622"/>
+      <file name="frames.html" size="914"/>
+      <file name="index.html" size="2969"/>
+      <folder name="js">
+        <file name="app.js" size="6926"/>
+        <file name="full_list.js" size="5367"/>
+        <file name="jquery.js" size="93868"/>
+      </folder>
+      <file name="method_list.html" size="1525"/>
+      <file name="Todo.html" size="2457"/>
+      <file name="top-level-namespace.html" size="2213"/>
+    </folder>
+    <file name="Gemfile" size="140"/>
+    <file name="Gemfile.lock" size="1266"/>
+    <folder name="lib">
+      <file name="application.rb" size="2095"/>
+      <folder name="public">
+        <folder name="css">
+          <file name="bootstrap.min.css" size="109518"/>
+        </folder>
+      </folder>
+      <folder name="todo">
+        <folder name="command">
+          <file name="options.rb" size="4214"/>
+        </folder>
+        <file name="command.rb" size="2306"/>
+        <file name="db.rb" size="1248"/>
+        <file name="task.rb" size="883"/>
+        <file name="version.rb" size="36"/>
+      </folder>
+      <file name="todo.rb" size="115"/>
+      <folder name="views">
+        <file name="_errors.haml" size="116"/>
+        <file name="_form.haml" size="618"/>
+        <file name="edit.haml" size="310"/>
+        <file name="index.haml" size="758"/>
+        <file name="layout.haml" size="666"/>
+        <file name="new.haml" size="239"/>
+        <file name="not_found.haml" size="86"/>
+      </folder>
+    </folder>
+    <file name="LICENSE.txt" size="1065"/>
+    <folder name="pkg">
+      <file name="todo-1.0.0.gem" size="6144"/>
+    </folder>
+    <file name="Rakefile" size="71"/>
+    <file name="README.md" size="552"/>
+    <folder name="todo-1.0.0">
+      <folder name="bin">
+        <file name="application.rb" size="124"/>
+        <file name="config.ru" size="44"/>
+        <file name="todo" size="61"/>
+      </folder>
+      <file name="Gemfile" size="89"/>
+      <file name="Gemfile.lock" size="981"/>
+      <folder name="lib">
+        <folder name="todo">
+          <file name="version.rb" size="36"/>
+        </folder>
+        <file name="todo.rb" size="115"/>
+      </folder>
+      <file name="LICENSE.txt" size="1065"/>
+      <file name="Rakefile" size="71"/>
+      <file name="README.md" size="552"/>
+      <file name="todo.gemspec" size="1130"/>
+    </folder>
+    <file name="todo.gemspec" size="1131"/>
+  </rootfolder>
+</testdata>
