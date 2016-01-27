@@ -19,10 +19,10 @@ module TestData
     end
 
     desc "create_tree --read [READ_FILEPATH]", "create content tree."
-    method_option :path, :type => :string, :default => "./sandbox/test.xml"
+    method_option :read, :type => :string, :required => true
     def create_tree
-      raise IOError, "file is not found -- path: #{options[:path]}" unless File.exist?(options[:path])
-      file = File.open(options[:path])
+      raise IOError, "file is not found --read: #{options[:read]}" unless File.exist?(options[:read])
+      file = File.open(options[:read])
       xml = Nokogiri::XML(file)
       xml.xpath("//testdata").children.each do |child|
         unless child.node_name == "text"
@@ -31,22 +31,24 @@ module TestData
       end
     end
 
-    desc "read_tree --path [READ_FILEPATH]", "read content tree to create a xml file."
-    method_options :path => :string
+    desc "read_tree --read [READ_FILEPATH] --write [WRITE_FILEPATH]", "read content tree to create a xml file."
+    method_option :read, :type => :string, :required => true
+    method_option :write, :type => :string, :required => true
     def read_tree
-      raise IOError, "file is not found -- path: #{options[:path]}" unless File.exist?(options[:path])
+      puts options[:read]
+      raise IOError, "file is not found --read: #{options[:read]}" unless File.exist?(options[:read])
       ret = ""
-      sub_contents = Dir.entries(options[:path])
+      sub_contents = Dir.entries(options[:read])
       xml = Builder::XmlMarkup.new(:target => ret, :indent => 2)
       xml.instruct!
-      rootfolder_name = options[:path].split("\/").last
+      rootfolder_name = options[:read].split("\/").last
       puts rootfolder_name
       xml.testdata {
         xml.rootfolder(:name => rootfolder_name) {
-          read_tree_recursion(xml, sub_contents, options[:path])
+          read_tree_recursion(xml, sub_contents, options[:read])
         }
       }
-      File.open("./ret.xml", "w") do |file|
+      File.open(options[:write], "w") do |file|
         file.puts ret
       end
     end
