@@ -43,7 +43,7 @@ describe TestData do
       expect(File.size("#{create_path}#{file_name}0")).to eq 1
       expect(Dir.glob(create_path).length).to eq 1
     end
-
+=begin
     it "file creation test of large size(1GB)" do
       TestData::Command.new.invoke(:create, [],{:name => "test", :num => 1, :size => 1073741824})
       expect(File.size("./testdata/test0")).to eq 1073741824
@@ -67,6 +67,7 @@ describe TestData do
       end
       expect(directory_size).to eq 102400000
     end
+=end
   end
 
   describe 'create_tree commnad test' do
@@ -132,14 +133,26 @@ describe TestData do
       FileUtils.rm_r(Dir.glob('./todo'), {:force=>true})
     end
 
-    it "should read file not found exception" do
-      path = "./spec/1234/lmx.xml"
-      expect{TestData::Command.new.invoke(:read_tree, [],{:read => path, :write => 'a'})}.to raise_error("file is not found --read: #{path}")
+    it "write and read destination path argument is not specified" do
+      expect{TestData::Command.new.invoke(:read_tree, [],{})}.to raise_error("No value provided for required options '--read', '--write'")
+    end
+
+    it "write destination path argument is not specified" do
+      expect{TestData::Command.new.invoke(:read_tree, [],{:read => "aaa"})}.to raise_error("No value provided for required options '--write'")
+    end
+
+    it "read destination path argument is not specified" do
+      expect{TestData::Command.new.invoke(:read_tree, [],{:write => "aaa"})}.to raise_error("No value provided for required options '--read'")
+    end
+
+    it "test if the read destination file not does not exist" do
+      read_path = "./file/not/found/test.xml"
+      expect{TestData::Command.new.invoke(:read_tree, [],{:read => read_path, :write => "./aaa/write.xml"})}.to raise_error("file is not found --read: #{read_path}")
     end
 
     it "less content file has a same" do
       path = "./spec/testdata/read_test.xml"
-      write_path = "./ret.xml"
+      write_path = "./tree.xml"
       TestData::Command.new.invoke(:create_tree, [],{:read => path})
       TestData::Command.new.invoke(:read_tree, [],{:read => "./top", :write => write_path})
       FileUtils.cmp(path,write_path)
@@ -147,7 +160,7 @@ describe TestData do
 
     it "there are many content file has a same" do
       path = "./spec/testdata/read_test2.xml"
-      write_path = "./ret.xml"
+      write_path = "./tree.xml"
       TestData::Command.new.invoke(:create_tree, [],{:read => path})
       TestData::Command.new.invoke(:read_tree, [],{:read => "./todo", :write => write_path})
       FileUtils.cmp(path,write_path)

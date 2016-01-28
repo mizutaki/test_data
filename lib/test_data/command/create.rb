@@ -35,7 +35,6 @@ module TestData
     method_option :read, :type => :string, :required => true
     method_option :write, :type => :string, :required => true
     def read_tree
-      puts options[:read]
       raise IOError, "file is not found --read: #{options[:read]}" unless File.exist?(options[:read])
       ret = ""
       sub_contents = Dir.entries(options[:read])
@@ -59,9 +58,8 @@ module TestData
         unless c.node_name == "text"
           if c.node_name == "folder"
             puts "folder"
-            current_name = c.attributes["name"].value#TODO name is nil throw exception
+            current_name = c.attributes["name"].value
             current_path = parent_path + "/" + current_name
-            puts "parent_path:" + parent_path
             FileUtils.mkdir_p(current_path) unless FileTest.exist?(current_path)
             create_content_recursion(c,current_path)
           elsif c.node_name == "file"
@@ -93,9 +91,7 @@ module TestData
       sub_contents.each do |content_name|
         unless "." == content_name  || ".." == content_name || content_name =~ /^\.d*/
           current_path = parent_path + "/" + content_name
-          puts "current_path:" + current_path
           is_dir = FileTest.directory?(current_path)
-          puts is_dir
           if is_dir
             puts "folder"
             sub = Dir.entries(current_path)
@@ -104,7 +100,6 @@ module TestData
             }
           else
             size = File.size(current_path)
-            puts size
             xml.file(:name => content_name, :size => size)
           end
         end
